@@ -1,5 +1,7 @@
 package com.mashibing.tank.practice;
 
+import com.sun.org.apache.bcel.internal.generic.BREAKPOINT;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -8,6 +10,8 @@ import java.awt.event.WindowEvent;
 
 public class TankFrame extends Frame {
     int x=200, y = 200;
+    Dir dir = Dir.DOWN;
+    final static int SPEED = 10;
     public TankFrame() {
         setSize(800, 600);
         setResizable(false);
@@ -20,12 +24,26 @@ public class TankFrame extends Frame {
         });
         setVisible(true);
         this.addKeyListener(new MyKeyListener());
+
     }
 
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
         g.fillRect(x,y,50,50);
+        switch (dir) {
+            case LEFT:
+                x -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
+        }
 //        x += 10;
 //        y += 10;
     }
@@ -36,6 +54,20 @@ public class TankFrame extends Frame {
         boolean bR = false;
         boolean bD = false;
 
+        private void move() {
+            if (bL) {
+                x -= 10;
+            }
+            if (bR) {
+                x += 10;
+            }
+            if (bU) {
+                y -= 10;
+            }
+            if (bD) {
+                y += 10;
+            }
+        }
 
         @Override
         public void keyPressed(KeyEvent e) {
@@ -43,15 +75,19 @@ public class TankFrame extends Frame {
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
                     bL = true;
+                    move();
                     break;
                 case KeyEvent.VK_UP:
                     bU = true;
+                    move();
                     break;
                 case KeyEvent.VK_RIGHT:
                     bR = true;
+                    move();
                     break;
                 case KeyEvent.VK_DOWN:
                     bD = true;
+                    move();
                     break;
                 default:
                     break;
@@ -59,6 +95,14 @@ public class TankFrame extends Frame {
             System.out.println("key press");
 //            x += 200;
 //            repaint();
+            setMainTankDir();
+        }
+
+        private void setMainTankDir() {
+            if (bL) dir = Dir.LEFT;
+            if (bR) dir = Dir.RIGHT;
+            if (bD) dir = Dir.DOWN;
+            if (bU) dir = Dir.UP;
         }
 
         @Override
@@ -68,19 +112,24 @@ public class TankFrame extends Frame {
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT:
                         bL = false;
+                        move();
                         break;
                     case KeyEvent.VK_UP:
                         bU = false;
+                        move();
                         break;
                     case KeyEvent.VK_RIGHT:
                         bR = false;
+                        move();
                         break;
                     case KeyEvent.VK_DOWN:
                         bD = false;
+                        move();
                         break;
                     default:
                         break;
                 }
+            setMainTankDir();
         }
     }
 
