@@ -14,6 +14,7 @@ public class TankFrame extends Frame {
 //    final static int SPEED = 10;
 
     Tank myTank = new Tank(200, 200, Dir.DOWN);
+    Bullet b = new Bullet(300, 300, Dir.DOWN);
     public TankFrame() {
         setSize(800, 600);
         setResizable(false);
@@ -32,7 +33,7 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         myTank.paint(g);
-
+        b.paint(g);
 //        x += 10;
 //        y += 10;
     }
@@ -74,9 +75,8 @@ public class TankFrame extends Frame {
             if (bR) myTank.setDir(Dir.RIGHT);
             if (bD) myTank.setDir(Dir.DOWN);
             if (bU) myTank.setDir(Dir.UP);
-            if (!bL && !bU && !bR && !bD) {
-                myTank.setMoving(false);
-            }
+            if (!bL && !bU && !bR && !bD) myTank.setMoving(false);
+
         }
 
         @Override
